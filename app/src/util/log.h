@@ -36,6 +36,6 @@ sc_log_windows_error(const char *prefix, int error);
 #endif
 
 void
-sc_log_configure(void);
+sc_log_configure(bool stdout_clear);
 
 #endif

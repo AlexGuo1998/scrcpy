@@ -86,7 +86,7 @@ main_scrcpy(int argc, char *argv[]) {
         goto end;
     }
 
-    sc_log_configure();
+    sc_log_configure(true); // TODO: args
 
 #ifdef HAVE_USB
     ret = args.opts.otg ? scrcpy_otg(&args.opts) : scrcpy(&args.opts);

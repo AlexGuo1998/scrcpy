@@ -6,6 +6,9 @@
 #include <assert.h>
 #include <libavformat/avformat.h>
 
+// If set to true, stdout should not be used for logging
+static bool sc_log_stdout_clear = false;
+
 static SDL_LogPriority
 log_level_sc_to_sdl(enum sc_log_level level) {
     switch (level) {
@@ -140,14 +143,15 @@ sc_sdl_log_print(void *userdata, int category, SDL_LogPriority priority,
     (void) userdata;
     (void) category;
 
-    FILE *out = priority < SDL_LOG_PRIORITY_WARN ? stdout : stderr;
+    FILE *out = (priority < SDL_LOG_PRIORITY_WARN && !sc_log_stdout_clear) ? stdout : stderr;
     assert(priority < SDL_NUM_LOG_PRIORITIES);
     const char *prio_name = sc_sdl_log_priority_names[priority];
     fprintf(out, "%s: %s\n", prio_name, message);
 }
 
 void
-sc_log_configure(void) {
+sc_log_configure(bool stdout_clear) {
+    sc_log_stdout_clear = stdout_clear;
     SDL_LogSetOutputFunction(sc_sdl_log_print, NULL);
     // Redirect FFmpeg logs to SDL logs
     av_log_set_callback(sc_av_log_callback);
