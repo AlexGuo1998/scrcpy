@@ -33,7 +33,7 @@ main_scrcpy(int argc, char *argv[]) {
     setbuf(stderr, NULL);
 #endif
 
-    printf("scrcpy " SCRCPY_VERSION
+    fprintf(stderr, "scrcpy " SCRCPY_VERSION
            " <https://github.com/Genymobile/scrcpy>\n");
 
     struct scrcpy_cli_args args = {
@@ -98,7 +98,7 @@ end:
     if (args.pause_on_exit == SC_PAUSE_ON_EXIT_TRUE ||
             (args.pause_on_exit == SC_PAUSE_ON_EXIT_IF_ERROR &&
                 ret != SCRCPY_EXIT_SUCCESS)) {
-        printf("Press Enter to continue...\n");
+        fprintf(stderr, "Press Enter to continue...\n");
         getchar();
     }
 
