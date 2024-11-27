@@ -66,6 +66,7 @@ enum sc_process_result {
 
 #define SC_PROCESS_NO_STDOUT (1 << 0)
 #define SC_PROCESS_NO_STDERR (1 << 1)
+#define SC_PROCESS_STDOUT_TO_STDERR (1 << 2)
 
 /**
  * Execute the command and write the process id to `pid`
@@ -73,9 +74,12 @@ enum sc_process_result {
  * The `flags` argument is a bitwise OR of the following values:
  *  - SC_PROCESS_NO_STDOUT
  *  - SC_PROCESS_NO_STDERR
+ *  - SC_PROCESS_STDOUT_TO_STDERR
  *
  * It indicates if stdout and stderr must be inherited from the scrcpy process
  * (i.e. if the process must output to the scrcpy console).
+ * If `SC_PROCESS_STDOUT_TO_STDERR` is set, any output sent to stdout will be
+ * redirect to stderr, to make stdout clear.
  */
 enum sc_process_result
 sc_process_execute(const char *const argv[], sc_pid *pid, unsigned flags);

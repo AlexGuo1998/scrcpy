@@ -12,6 +12,7 @@
 #define SC_ADB_NO_STDOUT (1 << 0)
 #define SC_ADB_NO_STDERR (1 << 1)
 #define SC_ADB_NO_LOGERR (1 << 2)
+#define SC_ADB_STDOUT_TO_STDERR (1 << 3)
 
 #define SC_ADB_SILENT (SC_ADB_NO_STDOUT | SC_ADB_NO_STDERR | SC_ADB_NO_LOGERR)
 

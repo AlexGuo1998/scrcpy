@@ -15,6 +15,7 @@ sc_process_execute_p(const char *const argv[], sc_pid *pid, unsigned flags,
                      int *pin, int *pout, int *perr) {
     bool inherit_stdout = !pout && !(flags & SC_PROCESS_NO_STDOUT);
     bool inherit_stderr = !perr && !(flags & SC_PROCESS_NO_STDERR);
+    bool stdout_to_stderr = inherit_stdout && (flags & SC_PROCESS_STDOUT_TO_STDERR);
 
     int in[2];
     int out[2];
@@ -129,6 +130,10 @@ sc_process_execute_p(const char *const argv[], sc_pid *pid, unsigned flags,
             } else {
                 LOGE("Could not open /dev/null for stderr");
             }
+        }
+
+        if (stdout_to_stderr) {
+            dup2(STDERR_FILENO, STDOUT_FILENO);
         }
 
         close(internal[0]);

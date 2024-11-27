@@ -209,6 +209,9 @@ sc_adb_execute_p(const char *const argv[], unsigned flags, sc_pipe *pout) {
     if (flags & SC_ADB_NO_STDERR) {
         process_flags |= SC_PROCESS_NO_STDERR;
     }
+    if (flags & SC_ADB_STDOUT_TO_STDERR) {
+        process_flags |= SC_PROCESS_STDOUT_TO_STDERR;
+    }
 
     sc_pid pid;
     enum sc_process_result r =

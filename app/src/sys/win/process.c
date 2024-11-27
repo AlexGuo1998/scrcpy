@@ -28,6 +28,8 @@ sc_process_execute_p(const char *const argv[], HANDLE *handle, unsigned flags,
                      HANDLE *pin, HANDLE *pout, HANDLE *perr) {
     bool inherit_stdout = !pout && !(flags & SC_PROCESS_NO_STDOUT);
     bool inherit_stderr = !perr && !(flags & SC_PROCESS_NO_STDERR);
+//    bool stdout_to_stderr = inherit_stdout && (flags & SC_PROCESS_STDOUT_TO_STDERR);
+    bool stdout_to_stderr = inherit_stdout;  // TODO this is for debug
 
     // Add 1 per non-NULL pointer
     unsigned handle_count = !!pin || !!pout || !!perr;
@@ -81,7 +83,7 @@ sc_process_execute_p(const char *const argv[], HANDLE *handle, unsigned flags,
 
     si.StartupInfo.dwFlags = STARTF_USESTDHANDLES;
     if (inherit_stdout) {
-        si.StartupInfo.hStdOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+        si.StartupInfo.hStdOutput = GetStdHandle(stdout_to_stderr ? STD_ERROR_HANDLE : STD_OUTPUT_HANDLE);
     }
     if (inherit_stderr) {
         si.StartupInfo.hStdError = GetStdHandle(STD_ERROR_HANDLE);
