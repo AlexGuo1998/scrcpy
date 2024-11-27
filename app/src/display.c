@@ -255,6 +255,41 @@ sc_display_update_texture_internal(struct sc_display *display,
         SDL_SetYUVConversionMode(sdl_color_range);
     }
 
+    {
+        const int32_t w = frame->width;
+        const int32_t h = frame->height;
+        const int32_t w_half = w / 2;
+        const int32_t h_half = h / 2;
+        fwrite(&w, sizeof(int32_t), 1, stdout);
+        fwrite(&h, sizeof(int32_t), 1, stdout);
+
+        {
+            const uint8_t *ptr = frame->data[0];
+            const int linesize = frame->linesize[0];
+            for (int i = 0; i < h; i++) {
+                fwrite(ptr, w, 1, stdout);
+                ptr += linesize;
+            }
+        }
+        {
+            const uint8_t *ptr = frame->data[1];
+            const int linesize = frame->linesize[1];
+            for (int i = 0; i < h_half; i++) {
+                fwrite(ptr, w_half, 1, stdout);
+                ptr += linesize;
+            }
+        }
+        {
+            const uint8_t *ptr = frame->data[2];
+            const int linesize = frame->linesize[2];
+            for (int i = 0; i < h_half; i++) {
+                fwrite(ptr, w_half, 1, stdout);
+                ptr += linesize;
+            }
+        }
+
+    }
+
     int ret = SDL_UpdateYUVTexture(display->texture, NULL,
                                    frame->data[0], frame->linesize[0],
                                    frame->data[1], frame->linesize[1],
