@@ -21,6 +21,7 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#include <fcntl.h>
 #include "util/str.h"
 #endif
 
@@ -31,6 +32,7 @@ main_scrcpy(int argc, char *argv[]) {
     // even line buffering (setvbuf() with mode _IOLBF) is not sufficient
     setbuf(stdout, NULL);
     setbuf(stderr, NULL);
+    setmode(fileno(stdout), O_BINARY);
 #endif
 
     fprintf(stderr, "scrcpy " SCRCPY_VERSION
